@@ -4,7 +4,7 @@ module AssetsBooster
       AssetPackage.merge_environments.include?(Rails.env)
     end
 
-    def assets_booster_package(type, *names)
+    def assets_booster_tag(type, *names)
       options = names.extract_options!
       html = names.map do |name|
         methode, sources = AssetsBooster::Packager.packages[type][name].view_helper
