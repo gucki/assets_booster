@@ -1,17 +1,13 @@
 module AssetsBooster
   module Package
     class Javascript < Base
-      def self.compiler
-        AssetsBooster::Configuration.compiler_for_type(:javascript)
-      end
-      
-      def self.merger
+      def merger_class
         require "assets_booster/merger/simple"
         AssetsBooster::Merger::Simple
       end
       
-      def self.asset_path(name)
-        path = AssetsBooster::Configuration.asset_path("javascripts")
+      def asset_path(name)
+        path = AssetsBooster::Packager.asset_path("javascripts")
         path = File.join(path, name+".js") if name
       end
       

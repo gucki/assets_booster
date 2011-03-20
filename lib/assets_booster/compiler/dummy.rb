@@ -1,14 +1,11 @@
-require 'uri'
-require 'net/http'
-
 module AssetsBooster
   module Compiler
     class Dummy
-      def self.name
+      def name
         "Dummy Compiler"
       end
                   
-      def self.compile(code)
+      def compile(code)
         code
       end
     end

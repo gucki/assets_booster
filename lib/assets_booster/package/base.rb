@@ -1,27 +1,37 @@
+require "assets_booster/packager"
 module AssetsBooster
   module Package
     class Base
       attr_accessor :name
-      attr_accessor :filename
       attr_accessor :assets
-      attr_accessor :mtime
+      attr_accessor :filename
+      attr_accessor :merger_class
+      attr_accessor :compiler_class
       
       def initialize(name, assets)
         self.name = name+"_packaged"
         self.assets = assets
-        self.filename = self.class.asset_path(self.name)
+        self.filename = asset_path(self.name)
       end
 
       def exists?
         File.exists?(filename)
       end
       
+      def merger
+        @merger ||= merger_class.new(sources)
+      end
+      
+      def compiler
+        @compiler ||= compiler_class.new
+      end
+
       def mtime
-        @mtime ||= self.class.merger.mtime(sources) 
+        @mtime ||= merger.mtime 
       end
       
       def sources
-        assets.each.map{ |asset| self.class.asset_path(asset) }
+        @sources ||= assets.each.map{ |asset| asset_path(asset) }
       end
 
       def delete
@@ -29,20 +39,20 @@ module AssetsBooster
       end
 
       def merge
-        AssetsBooster.log("Merging assets using #{self.class.merger.name} to #{relative_filename}...")
-        save(self.class.merger.merge(sources, filename))
+        AssetsBooster.log("Merging assets using #{merger.name} to #{relative_filename}...")
+        save(merger.merge(filename))
       end
 
       def compile
-        merged = merge
-        AssetsBooster.log("Compiling #{relative_filename} using #{self.class.compiler.name}...")
-        code = self.class.compiler.compile(merged)
-        AssetsBooster.log("Compilation finished: %5.2f%% saved." % [(1-code.size.to_f/merged.size)*100])
+        merged_code = merge
+        AssetsBooster.log("Compiling #{relative_filename} using #{compiler.name}...")
+        code = compiler.compile(merged_code)
+        AssetsBooster.log("Compilation finished: %5.2f%% saved." % [(1-code.size.to_f/merged_code.size)*100])
         save(code)
       end
 
-      def view_helper
-        sources = AssetsBooster::Configuration.boosted_environment? ? [name] : assets
+      def view_helper(packager)
+        sources = packager.boosted_environment? ? [name] : assets
         [view_helper_method, sources]
       end
 
@@ -63,7 +73,7 @@ module AssetsBooster
       end
       
       def relative_filename
-        filename.sub(Rails.root, ".")
+        filename.sub("#{Rails.root}/", "")
       end
     end
   end

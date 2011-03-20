@@ -1,5 +1,6 @@
 require 'rubygems'
 require 'bundler/setup'
+require 'rails'
 
 require 'assets_booster'
 

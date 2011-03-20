@@ -1,12 +1,14 @@
 require 'rails'
+require "assets_booster/packager"
+require 'assets_booster/view_helper'
 
 module AssetsBooster
   class Railtie < Rails::Railtie
+    cattr_accessor :packager
+
     config.after_initialize do
-      require "assets_booster/packager"
-      AssetsBooster::Packager.init
+      self.packager = AssetsBooster::Packager.new
       ActiveSupport.on_load :action_view do
-        require 'assets_booster/view_helper'
         ActionView::Base.send(:include, AssetsBooster::ViewHelper)
       end
     end
