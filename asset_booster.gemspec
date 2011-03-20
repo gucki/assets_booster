@@ -6,11 +6,11 @@ Gem::Specification.new do |s|
   s.name        = "assets_booster"
   s.version     = AssetsBooster::VERSION
   s.platform    = Gem::Platform::RUBY
-  s.authors     = ["TODO: Write your name"]
-  s.email       = ["TODO: Write your email address"]
+  s.authors     = ["Corin Langosch"]
+  s.email       = ["info@netskin.com"]
   s.homepage    = ""
-  s.summary     = %q{TODO: Write a gem summary}
-  s.description = %q{TODO: Write a gem description}
+  s.summary     = %q{Assets (javascripts, css) compression for rails applications}
+  s.description = %q{Instead of sending down a dozen JavaScript and CSS files full of formatting and comments, this gem makes it simple to merge and compress these into one or more files, increasing speed and saving bandwidth.}
 
   s.rubyforge_project = "assets_booster"
 
