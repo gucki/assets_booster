@@ -1,4 +1,3 @@
-add css compiler
 view helper: recompile assets if needed (check timestamps)
 write readme
 release gem

@@ -6,12 +6,11 @@ module AssetsBooster
       end
                   
       def self.merge(sources, target)
-        css = sources.inject("") do |code, source|
+        sources.inject("") do |code, source|
           File.open(source, "r") do |file|
             code << file.read.strip+"\n"
           end
-        end
-        [css.strip, sources]
+        end.strip
       end
 
       def self.mtime(sources)

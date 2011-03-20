@@ -14,12 +14,11 @@ module AssetsBooster
         end
 
         target_folder = File.dirname(target)
-        css = assets.inject("") do |code, asset|
+        assets.inject("") do |code, asset|
           source_folder = File.dirname(asset[:source])
           rewrite_urls!(asset[:css], source_folder, target_folder)
           code << asset[:css]+"\n"
-        end
-        [css.strip, assets]
+        end.strip
       end
 
       def self.mtime(sources)

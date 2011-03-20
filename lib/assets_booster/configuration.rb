@@ -39,7 +39,7 @@ module AssetsBooster
               'options' => "",
             },
             'stylesheet' => {
-              'name' => "dummy",
+              'name' => "rainpress",
               'options' => "",
             }
           },

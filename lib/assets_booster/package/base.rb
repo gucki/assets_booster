@@ -34,11 +34,11 @@ module AssetsBooster
       end
 
       def compile
-        merge
-        merged = read
+        merged = merge
         AssetsBooster.log("Compiling #{relative_filename} using #{self.class.compiler.name}...")
-        save(self.class.compiler.compile(merged))
+        code = self.class.compiler.compile(merged)
         AssetsBooster.log("Compilation finished: %5.2f%% saved." % [(1-code.size.to_f/merged.size)*100])
+        save(code)
       end
 
       def view_helper
@@ -53,6 +53,7 @@ module AssetsBooster
           file.write(code)
         end
         File.utime(mtime, mtime, filename)
+        code
       end
 
       def read
