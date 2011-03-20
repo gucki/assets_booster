@@ -15,6 +15,14 @@ module AssetsBooster
       def exists?
         File.exists?(filename)
       end
+      
+      def mtime
+        @mtime ||= self.class.merger.mtime(sources) 
+      end
+      
+      def sources
+        assets.each.map{ |asset| self.class.asset_path(asset) }
+      end
 
       def delete
         File.delete(filename) if File.exists?(filename)
@@ -22,8 +30,6 @@ module AssetsBooster
 
       def merge
         AssetsBooster.log("Merging assets using #{self.class.merger.name} to #{relative_filename}...")
-        sources = assets.each.map{ |asset| self.class.asset_path(asset) }
-        self.mtime = self.class.merger.mtime(sources)
         save(self.class.merger.merge(sources, filename))
       end
 
