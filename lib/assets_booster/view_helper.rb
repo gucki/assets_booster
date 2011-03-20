@@ -6,8 +6,9 @@ module AssetsBooster
 
     def assets_booster_tag(type, *names)
       options = names.extract_options!
+      packages = AssetsBooster::Packager.packages[type]
       html = names.map do |name|
-        methode, sources = AssetsBooster::Packager.packages[type][name].view_helper
+        methode, sources = packages[name].view_helper
         send(methode, sources, options)
       end*"\n"
       html.html_safe

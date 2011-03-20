@@ -5,6 +5,11 @@ module AssetsBooster
         AssetsBooster::Configuration.compiler_for_type(:stylesheet)
       end
       
+      def self.merger
+        require "assets_booster/merger/css"
+        AssetsBooster::Merger::CSS
+      end
+      
       def self.asset_path(name)
         path = AssetsBooster::Configuration.asset_path("stylesheets")
         path = File.join(path, name+".css") if name

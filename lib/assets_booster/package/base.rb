@@ -20,27 +20,16 @@ module AssetsBooster
       end
 
       def merge
-        AssetsBooster.log("Merging assets to #{relative_filename}...")
-        code = ""
-        assets.each do |asset|
-          File.open(self.class.asset_path(asset), "r") do |src|
-            code << src.read+"\n"
-          end
-        end
-        File.open(filename, "w") do |file|
-          file.write(code)
-        end
+        AssetsBooster.log("Merging assets using #{self.class.merger.name} to #{relative_filename}...")
+        save(self.class.merger.merge(assets.each.map{ |asset| self.class.asset_path(asset) }, filename))
       end
-      
+
       def compile
         merge
         merged = read
         AssetsBooster.log("Compiling #{relative_filename} using #{self.class.compiler.name}...")
-        code = self.class.compiler.compile(merged)
-        File.open(filename, "w") do |file|
-          file.write(code)
-        end
-        AssetsBooster.log("Compilation finished: %5.2f%% saved."%[(1-code.size.to_f/merged.size)*100])
+        save(self.class.compiler.compile(merged))
+        AssetsBooster.log("Compilation finished: %5.2f%% saved." % [(1-code.size.to_f/merged.size)*100])
       end
 
       def view_helper
@@ -50,6 +39,12 @@ module AssetsBooster
 
       private
       
+      def save(code)
+        File.open(filename, "w") do |file|
+          file.write(code)
+        end
+      end
+
       def read
         File.open(filename, "r") do |file| 
           file.read

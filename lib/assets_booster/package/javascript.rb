@@ -5,6 +5,11 @@ module AssetsBooster
         AssetsBooster::Configuration.compiler_for_type(:javascript)
       end
       
+      def self.merger
+        require "assets_booster/merger/simple"
+        AssetsBooster::Merger::Simple
+      end
+      
       def self.asset_path(name)
         path = AssetsBooster::Configuration.asset_path("javascripts")
         path = File.join(path, name+".js") if name
