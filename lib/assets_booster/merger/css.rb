@@ -1,6 +1,3 @@
-require 'uri'
-require 'net/http'
-
 module AssetsBooster
   module Merger
     class CSS
@@ -17,12 +14,21 @@ module AssetsBooster
         end
 
         target_folder = File.dirname(target)
-        assets.inject("") do |code, asset|
+        css = assets.inject("") do |code, asset|
           source_folder = File.dirname(asset[:source])
           rewrite_urls!(asset[:css], source_folder, target_folder)
           code << asset[:css]+"\n"
-        end.strip
+        end
+        [css.strip, assets]
       end
+
+      def self.mtime(sources)
+        self.assets = []
+        sources.each do |source|
+          load_source(source)
+        end
+        assets.map{ |asset| File.mtime(asset[:source]) }.max
+      end        
       
       private
       

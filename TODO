@@ -1,5 +1,4 @@
 add css compiler
-set timestamps correctly (max of used sources)
 view helper: recompile assets if needed (check timestamps)
 write readme
 release gem

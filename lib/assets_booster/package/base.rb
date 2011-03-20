@@ -4,6 +4,7 @@ module AssetsBooster
       attr_accessor :name
       attr_accessor :filename
       attr_accessor :assets
+      attr_accessor :mtime
       
       def initialize(name, assets)
         self.name = name+"_packaged"
@@ -21,7 +22,9 @@ module AssetsBooster
 
       def merge
         AssetsBooster.log("Merging assets using #{self.class.merger.name} to #{relative_filename}...")
-        save(self.class.merger.merge(assets.each.map{ |asset| self.class.asset_path(asset) }, filename))
+        sources = assets.each.map{ |asset| self.class.asset_path(asset) }
+        self.mtime = self.class.merger.mtime(sources)
+        save(self.class.merger.merge(sources, filename))
       end
 
       def compile
@@ -43,6 +46,7 @@ module AssetsBooster
         File.open(filename, "w") do |file|
           file.write(code)
         end
+        File.utime(mtime, mtime, filename)
       end
 
       def read
