@@ -22,5 +22,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency "rails", "~>3.0.5"
   s.add_development_dependency "rspec", "~>2.5.0"
   s.add_development_dependency "rainpress", "~>1.0"
+  s.add_development_dependency "yui-compressor", "~>0.9.4"
 end
 

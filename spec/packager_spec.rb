@@ -45,7 +45,7 @@ module AssetsBooster
               'compiler' => "uglify",
             },
             'stylesheet' => {
-              'compiler' => "rainpress",
+              'compiler' => "yui_css",
             },
             'environments' => %w(test),
           }
@@ -60,7 +60,7 @@ module AssetsBooster
         File.should_receive(:utime).with(13, 13, "/rails/public/stylesheets/base_packaged.css").twice
 
         # compiling css
-        file.should_receive(:write).with("html{color:red}").once
+        file.should_receive(:write).with("html{color:#f00}").once
 
         # merging js
         File.should_receive(:read).with("/rails/public/javascripts/jquery.js").once.and_return("var action = 'jquery'; alert('jquery')")
@@ -77,7 +77,7 @@ module AssetsBooster
 
         subject.compile_all
         @messages[0].should match(/Merging assets.*CSS Merger/)
-        @messages[1].should match(/Compiling.*Rainpress/)
+        @messages[1].should match(/Compiling.*YUI Compressor/)
         @messages[3].should match(/Merging assets.*Simple Merger/)
         @messages[4].should match(/Compiling.*UglifyJS/)
       end

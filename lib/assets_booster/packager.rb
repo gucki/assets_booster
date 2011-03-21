@@ -69,7 +69,7 @@ module AssetsBooster
             'compiler' => "closure",
           },
           'stylesheet' => {
-            'compiler' => "rainpress",
+            'compiler' => "yui_css",
           },
           'environments' => %w(staging production),
         }
