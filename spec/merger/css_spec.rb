@@ -38,6 +38,38 @@ module AssetsBooster
             end
             subject.merge("target.css").should == "{color:#f00;}\n{color:#00f;}\n\n@import url(http://www.example.com/test.css)\n{color:#fff;}"
           end
+
+          it "should merge sources, combine charset directives and move the remaining one at top" do
+            File.stub(:read) do |source| 
+              case source
+              when 'a.css'
+                "{color:#fff;}"
+              when 'nested/b.css'
+                "@charset 'UTF-8';"
+              when 'c.css'
+                "@import d.css;@import e.css"
+              when 'd.css'
+                "{color:#00f;}"
+              when 'e.css'
+                "@charset 'utf-8'"
+              end
+            end
+            subject.merge("target.css").should == "@charset \"utf-8\";\n{color:#fff;}\n{color:#00f;}\n"
+          end
+
+          it "should merge sources, and complain if sources have conflicting charset directives" do
+            File.stub(:read) do |source| 
+              case source
+              when 'a.css'
+                "{color:#fff;}"
+              when 'nested/b.css'
+                "@charset 'UTF-8';"
+              when 'c.css'
+                "@charset 'iso-8859-1'"
+              end
+            end
+            lambda{ subject.merge("target.css") }.should raise_error(ArgumentError)
+          end
         end
 
         describe "absolute_url?" do
@@ -110,14 +142,14 @@ module AssetsBooster
           end
         end
         
-        describe "extract_url" do
-          it "should extract urls" do
+        describe "unquote" do
+          it "should return unquoted string and quotes" do
             [
               ["'test.png'", ["test.png", "'"]],
               ['"test.png"', ["test.png", '"']],
               ["test.png", ["test.png", ""]], 
             ].each do |input, output| 
-              subject.extract_url(input).should == output
+              subject.unquote(input).should == output
             end
           end
         end

@@ -8,12 +8,29 @@ module AssetsBooster
       
       def merge(target)
         target_folder = dirname(target)
-        assets.inject("") do |code, asset|
+        code = assets.inject("") do |code, asset|
           source_folder = dirname(asset[:source])
           asset[:css]= rewrite_urls(asset[:css], source_folder, target_folder)
           code << asset[:css]
           code << "\n"
         end.strip
+        
+        charset = nil
+        code.gsub!(/@charset\s+([^;\n]+)[;\n]*/).each do
+          current_charset, quotes = unquote($1)
+          current_charset.downcase!
+          if charset && charset != current_charset
+            raise ArgumentError, "source files have conflicting charsets (#{charset} != #{current_charset})"
+          end
+          charset = current_charset
+          ""
+        end
+        
+        if charset
+          code = "@charset \"#{charset}\";\n"+code
+        end
+
+        code
       end
 
       def load_source(source)
@@ -23,8 +40,8 @@ module AssetsBooster
         source_folder << "/" unless source_folder == ""
         asset[:css].gsub!(/@import\s+([^;\n]+)[;\n]*/).each do |import|
           url = $1.gsub(/^url\((.+)\)/i, '\1')
-          url, quotes = extract_url(url.strip)
-
+          url, quotes = unquote(url.strip)
+          
           # we don't want to statically import external stylesheets
           next import if absolute_url?(url)
 
@@ -40,7 +57,7 @@ module AssetsBooster
         return css if url_prepend == ""
   
         css.gsub(/url\(([^)]+)\)/i) do |match|
-          url, quotes = extract_url($1.strip)
+          url, quotes = unquote($1.strip)
 
           # we don't want to change references to external assets
           next match if absolute_url?(url) 
@@ -49,8 +66,8 @@ module AssetsBooster
         end
       end
       
-      def extract_url(quoted_url)
-        (quoted_url[0].chr =~ /["']/) ? [quoted_url.slice(1, quoted_url.length-2), quoted_url[0].chr] : [quoted_url, ""]
+      def unquote(quoted)
+        (quoted[0].chr =~ /["']/) ? [quoted.slice(1, quoted.length-2), quoted[0].chr] : [quoted, ""]
       end
       
       def absolute_url?(url)
