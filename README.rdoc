@@ -1,10 +1,10 @@
-==About
+=About
 
 Assets compression (javascript and css) for rails applications. Instead of sending down a dozen javascript and css files full of formatting and comments, this gem makes it simple to merge and compress these assets down into one or more files, increasing speed and saving bandwidth.
 
 When in development, it allows you to use your original versions and retain formatting and comments for readability and debugging.
 
-This gem was inspired by AssetPackager from Scott Becker, but is a complete rewrite and much more powerfull. 
+This gem was inspired by AssetPackager from Scott Becker, but is a complete rewrite and much more powerful. 
 
 
 ==Features
