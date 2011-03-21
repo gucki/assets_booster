@@ -25,16 +25,18 @@ module AssetsBooster
             File.stub(:read) do |source| 
               case source
               when 'a.css'
-                "@import d.css"
+                "@import d.css;@import e.css"
               when 'nested/b.css'
                 "@import url(http://www.example.com/test.css)"
               when 'c.css'
                 "{color:#fff;}"
               when 'd.css'
                 "{color:#f00;}"
+              when 'e.css'
+                "{color:#00f;}"
               end
             end
-            subject.merge("target.css").should == "{color:#f00;}\n\n@import url(http://www.example.com/test.css)\n{color:#fff;}"
+            subject.merge("target.css").should == "{color:#f00;}\n{color:#00f;}\n\n@import url(http://www.example.com/test.css)\n{color:#fff;}"
           end
         end
 

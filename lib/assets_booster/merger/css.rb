@@ -21,7 +21,7 @@ module AssetsBooster
         asset = assets.pop
         source_folder = dirname(asset[:source])
         source_folder << "/" unless source_folder == ""
-        asset[:css].gsub!(/@import\s+([^;\n\s]+)/).each do |import|
+        asset[:css].gsub!(/@import\s+([^;\n]+)[;\n]*/).each do |import|
           url = $1.gsub(/^url\((.+)\)/i, '\1')
           url, quotes = extract_url(url.strip)
 
