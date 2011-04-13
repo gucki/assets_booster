@@ -17,9 +17,7 @@ module AssetsBooster
 
           describe "with the inline option enabled" do
             it "should return a javascript tag with inline javascript" do
-              assets = ["a.js", "b.js", "c.js"]
-              subject.stub(:assets).and_return(assets)
-              subject.should_receive(:read).with(assets).and_return("javascript code")
+              subject.should_receive(:read).with().and_return("javascript code")
               @view.should_receive(:javascript_tag).with("javascript code")
               subject.view_helper(@view, :inline => true)
             end

@@ -17,9 +17,7 @@ module AssetsBooster
 
           describe "with the inline option enabled" do
             it "should return a style tag with inline css" do
-              assets = ["a.css", "b.css", "c.css"]
-              subject.stub(:assets).and_return(assets)
-              subject.should_receive(:read).with(assets).and_return("css code")
+              subject.should_receive(:read).with().and_return("css code")
               @view.should_receive(:style_tag).with("css code")
               subject.view_helper(@view, :inline => true)
             end

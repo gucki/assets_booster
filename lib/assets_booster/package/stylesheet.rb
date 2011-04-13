@@ -13,7 +13,7 @@ module AssetsBooster
       
       def view_helper(view, options)
         if options[:inline]
-          view.style_tag(read(assets))
+          view.style_tag(read)
         else
           view.stylesheet_link_tag(view_helper_sources, options)
         end
