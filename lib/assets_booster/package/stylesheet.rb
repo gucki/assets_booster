@@ -11,8 +11,12 @@ module AssetsBooster
         path = File.join(path, name+".css") if name
       end
       
-      def view_helper_method
-        :stylesheet_link_tag
+      def view_helper(view, options)
+        if options[:inline]
+          view.style_tag(read(assets))
+        else
+          view.stylesheet_link_tag(view_helper_sources, options)
+        end
       end
     end
   end

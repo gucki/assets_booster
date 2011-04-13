@@ -11,8 +11,12 @@ module AssetsBooster
         path = File.join(path, name+".js") if name
       end
       
-      def view_helper_method
-        :javascript_include_tag
+      def view_helper(view, options)
+        if options[:inline]
+          view.javascript_tag(read(assets))
+        else
+          view.javascript_include_tag(view_helper_sources, options)
+        end
       end
     end
   end

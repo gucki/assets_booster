@@ -51,9 +51,8 @@ module AssetsBooster
         save(code)
       end
 
-      def view_helper(packager)
-        sources = packager.boosted_environment? ? [name] : assets
-        [view_helper_method, sources]
+      def view_helper_sources
+        AssetsBooster::Railtie.packager.boosted_environment? ? [name] : assets
       end
 
       private

@@ -1,12 +1,14 @@
 module AssetsBooster
   module ViewHelper
+    def style_tag(css)
+      content_tag(:style, css, :type => Mime::CSS)
+    end
+
     def assets_booster_tag(type, *names)
       options = names.extract_options!
-      packager = AssetsBooster::Railtie.packager
-      packages = packager.packages[type]
+      packages = AssetsBooster::Railtie.packager.packages[type]
       html = names.map do |name|
-        methode, sources = packages[name].view_helper(packager)
-        send(methode, sources, options)
+        packages[name].view_helper(self, options)
       end*"\n"
       html.html_safe
     end

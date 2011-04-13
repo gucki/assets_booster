@@ -33,11 +33,11 @@ module AssetsBooster
       it "should compile all assets of all packages" do
         YAML.should_receive(:load_file).with(subject.configuration_filename).and_return(
           'packages' => {
-            'javascript' => {
-              'base' => %w(jquery rails),
-            },
             'stylesheet' => {
               'base' => %w(screen),
+            },
+            'javascript' => {
+              'base' => %w(jquery rails),
             },
           },
           'options' => {
