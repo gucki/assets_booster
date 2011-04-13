@@ -13,7 +13,7 @@ module AssetsBooster
       
       def view_helper(view, options)
         if options[:inline]
-          view.javascript_tag(read)
+          view.javascript_tag(read, options.except(:inline))
         else
           view.javascript_include_tag(view_helper_sources, options)
         end

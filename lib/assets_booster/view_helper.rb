@@ -1,7 +1,7 @@
 module AssetsBooster
   module ViewHelper
-    def style_tag(css)
-      content_tag(:style, css, :type => Mime::CSS)
+    def style_tag(css, options = {})
+      content_tag(:style, css, options.merge(:type => Mime::CSS))
     end
 
     def assets_booster_tag(type, *names)

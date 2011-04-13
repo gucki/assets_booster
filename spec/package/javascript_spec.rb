@@ -15,21 +15,34 @@ module AssetsBooster
             @view = double("View")
           end
 
-          describe "with the inline option enabled" do
+          describe "with the inline option" do
+            before do
+              @options = {:a => "b", :inline => true}
+            end
+
             it "should return a javascript tag with inline javascript" do
-              subject.should_receive(:read).with().and_return("javascript code")
-              @view.should_receive(:javascript_tag).with("javascript code")
-              subject.view_helper(@view, :inline => true)
+              subject.should_receive(:read).with()
+              @view.should_receive(:javascript_tag).and_return("<script>javascript</script>")
+              subject.view_helper(@view, @options).should == "<script>javascript</script>"
+            end
+
+            it "should not pass the inline option to the tag generator" do
+              subject.should_receive(:read).and_return("js code")
+              @view.should_receive(:javascript_tag).with("js code", @options.except(:inline))
+              subject.view_helper(@view, @options)
             end
           end
 
-          describe "with no options" do
+          describe "with no special options" do
+            before do
+              @options = {:a => "b"}
+            end
+
             it "should return html tags" do
-              options = {}
               sources = ["source1.js", "source2.js"]
               subject.should_receive(:view_helper_sources).and_return(sources)
-              @view.should_receive(:javascript_include_tag).with(sources, options)
-              subject.view_helper(@view, options)
+              @view.should_receive(:javascript_include_tag).with(sources, @options)
+              subject.view_helper(@view, @options)
             end
           end
         end
