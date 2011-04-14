@@ -29,7 +29,7 @@ module AssetsBooster
           # we don't want to change references to external assets
           next match if external_url?(url)
 
-          url = url[1..-1] if url[0] == "/"
+          url = url[1..-1] if url[0].chr == "/"
           "url(#{quotes}#{base_url}/#{url}#{quotes})"
         end
       end
