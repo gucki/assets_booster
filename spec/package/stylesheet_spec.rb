@@ -10,6 +10,13 @@ module AssetsBooster
           end
         end
 
+        describe "default_asset_host" do
+          it "should return Rails.configuratrion.action_controller.asset_host" do
+            Rails.stub_chain(:configuration, :action_controller, :asset_host).and_return(:test)
+            subject.default_asset_host.should == :test
+          end
+        end
+
         describe "view_helper" do
           before do
             @view = double("View")
@@ -30,6 +37,31 @@ module AssetsBooster
               subject.should_receive(:read).and_return("css code")
               @view.should_receive(:style_tag).with("css code", @options.except(:inline))
               subject.view_helper(@view, @options)
+            end
+            
+            describe "and the hositfy_urls option set to true" do
+              before do
+                @options[:inline] = {:hostify_urls => true}
+              end
+
+              it "should return a style tag with inline css whose urls have been hostified with the default asset host" do
+                subject.should_receive(:default_asset_host).and_return("http://webcache.eu")
+                subject.should_receive(:read).and_return("<style>body{background-image:url(test.png)}</style>")
+                @view.should_receive(:style_tag).with("<style>body{background-image:url(http://webcache.eu/test.png)}</style>", @options.except(:inline))
+                subject.view_helper(@view, @options)
+              end
+            end
+            
+            describe "and the hositfy_urls option set to a string" do
+              before do
+                @options[:inline] = {:hostify_urls => "http://myhost.eu"}
+              end
+
+              it "should return a style tag with inline css whose urls have been hostified with the specified host" do
+                subject.should_receive(:read).and_return("<style>body{background-image:url(test.png)}</style>")
+                @view.should_receive(:style_tag).with("<style>body{background-image:url(http://myhost.eu/test.png)}</style>", @options.except(:inline))
+                subject.view_helper(@view, @options)
+              end
             end
           end
 
