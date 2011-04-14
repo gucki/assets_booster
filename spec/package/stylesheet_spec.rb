@@ -39,7 +39,7 @@ module AssetsBooster
               subject.view_helper(@view, @options)
             end
             
-            describe "and the hositfy_urls option set to true" do
+            describe "and the hostify_urls option set to true" do
               before do
                 @options[:inline] = {:hostify_urls => true}
               end
@@ -52,7 +52,7 @@ module AssetsBooster
               end
             end
             
-            describe "and the hositfy_urls option set to a string" do
+            describe "and the hostify_urls option set to a string" do
               before do
                 @options[:inline] = {:hostify_urls => "http://myhost.eu"}
               end

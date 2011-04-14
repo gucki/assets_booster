@@ -53,7 +53,7 @@ module AssetsBooster
       end
 
       describe "hostify_urls" do
-        it "should transform relative urls into absolute urls using the given base url" do
+        it "should add the given base url to non-external urls" do
           subject.hostify_urls("http://webcache.eu", "{color:#f00; background:url(test.png)}").should == "{color:#f00; background:url(http://webcache.eu/test.png)}"
           subject.hostify_urls("http://webcache.eu", "{color:#f00; background:url(/test.png)}").should == "{color:#f00; background:url(http://webcache.eu/test.png)}"
           subject.hostify_urls("http://webcache.eu", "{color:#f00; background:url(nested/test.png)}").should == "{color:#f00; background:url(http://webcache.eu/nested/test.png)}"
