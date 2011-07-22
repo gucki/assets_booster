@@ -42,7 +42,7 @@ module AssetsBooster
           },
           'options' => {
             'javascript' => {
-              'compiler' => "uglify",
+              'compiler' => "closure",
             },
             'stylesheet' => {
               'compiler' => "yui_css",
@@ -73,13 +73,13 @@ module AssetsBooster
         File.should_receive(:utime).with(14, 14, "/rails/public/javascripts/base_packaged.js").twice
 
         # compiling js
-        file.should_receive(:write).with("var action=\"jquery\";alert(\"jquery\"),action=12,alert(\"rails\")").once
+        file.should_receive(:write).with("var action=\"jquery\";alert(\"jquery\");action=12;alert(\"rails\");").once
 
         subject.compile_all
         @messages[0].should match(/Merging assets.*CSS Merger/)
         @messages[1].should match(/Compiling.*YUI Compressor/)
         @messages[3].should match(/Merging assets.*Simple Merger/)
-        @messages[4].should match(/Compiling.*UglifyJS/)
+        @messages[4].should match(/Compiling.*Closure/)
       end
     end
   end
