@@ -4,12 +4,12 @@ Assets compression (javascript and css) for rails applications. Instead of sendi
 
 When in development, it allows you to use your original versions and retain formatting and comments for readability and debugging.
 
-This gem was inspired by AssetPackager from Scott Becker, but is a complete rewrite and much more powerful. 
+This gem was inspired by AssetPackager from Scott Becker, but is a complete rewrite and much more powerful.
 
 
 ==Features
 
-* Full rails 3 support 
+* Full rails 3 support
 * Support for several compressors, easy to add your own
 * Supporting url rewriting and handling of @imports in stylesheets
 * Clean implementation with new codebase
@@ -26,13 +26,13 @@ Or when using bundler, add it got your Gemfile:
 
   gem assets_booster
 
-  
+
 ==Quick Start
 
 If you dont't have a configuration file yet, you can easily have one created using this command:
 
   rake assets_booster:setup
-  
+
 To compile the assets (normally done before deployment):
 
   rake assets_booster:compile
@@ -55,3 +55,7 @@ guidelines:
 4. Commit, do not mess with rakefile, version, or history. (if you want to have your own version, that is fine but bump version in a commit by itself I can ignore when I pull)
 5. Send me a pull request. Bonus points for topic branches.
 
+
+==Copyright
+
+Copyright (c) 2011 {Corin Langosch}[http://www.corinlangosch.com]. Released unter the MIT license.

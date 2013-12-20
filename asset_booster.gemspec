@@ -6,8 +6,9 @@ Gem::Specification.new do |s|
   s.name        = "assets_booster"
   s.version     = AssetsBooster::VERSION
   s.platform    = Gem::Platform::RUBY
+  s.license     = "MIT"
   s.authors     = ["Corin Langosch"]
-  s.email       = ["info@netskin.com"]
+  s.email       = ["info@corinlangosch.com"]
   s.homepage    = "http://github.com/gucki/assets_booster"
   s.summary     = %q{Assets (javascripts, css) compression for rails applications}
   s.description = %q{Instead of sending down a dozen JavaScript and CSS files full of formatting and comments, this gem makes it simple to merge and compress these into one or more files, increasing speed and saving bandwidth.}
